@@ -4,19 +4,17 @@
   <meta charset="UTF-8">
   <title>BSGL – Live & Replays</title>
   <link rel="stylesheet" href="styles.css">
+  
 </head>
 <body>
   <header>
     <h1>BSGL Live Matches</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="stream.html">Watch Matches</a>
-    </nav>
+    <div id="nav-placeholder"></div>
   </header>
 
   <main>
     <section class="live-stream">
-      <h2>Live Now</h2>
+      <h2>you can watch matches here</h2>
       <iframe
   src="https://player.twitch.tv/?channel=bsgl_official&parent=127.0.0.1"
   frameborder="0"
@@ -39,5 +37,13 @@
   <footer>
     <p>© 2025 Big Skill Gorilla League</p>
   </footer>
+  <script>
+    fetch("nav.html")
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("nav-placeholder").innerHTML = data;
+      });
+  </script>
+  
 </body>
 </html>

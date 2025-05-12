@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BSGL – Live & Replays</title>
+  <link rel="stylesheet" href="styles.css">
+  
+</head>
+<body>
+  <header>
+    <h1>BSGL teams</h1>
+    <div id="nav-placeholder"></div>
+  </header>
+
+  <main>
+    <section class="teams">
+      <h2>you can check current teams in our league</h2>
+      <ul>
+        <li>*the exploding dynamite - phantom (forfeit)</li>
+        <br>
+        <li>*The smooth gorillas - TSGNUGGET</li>
+        <br>
+        <li>*CLMTY | Calamity - clmty.lomo</li>
+        <br>
+        <li>*Standalone Monkes (SAM) - spinvrr(lost to TSG)</li>
+        <br>
+        <li>*Dark Matter - CascadeGT and Havic(forfeit/found a cheater)</li>
+        <br>
+        <li>*Too Tuff Monkes - (TTM)Sportsvr(forfeit)</li>
+        <br>
+        <li>*Ice monkes - Iconicninja5</li>
+        <br>
+        <li>*BSS - BSScapy(unknown fate)</li>
+        <br>
+        <li>*THE FALLEN APES - (TFA)GG,,</li>
+        <br>
+        <li>*Acron - ACRpeanut</li>
+        <br>
+        <li>*TLA The Lost Angeles - TLAClaude</li>
+        <br>
+        <li>*The shadow tourchours - TSTSW3DOR(lost to TLA)</li>
+        
+        
+      </ul>
+    </section>
+    <section class="bracket">
+        <h2>BSGL Bracket</h2>
+        <div class="bracket-container">
+          <div class="round">
+            <h3>Round 1</h3>
+            <div class="match">TLA vs TST</div>
+            <div class="match">SAM vs TSG</div>
+            <div class="match">TFA vs TE</div>
+            <div class="match">DM vs CLMTY</div>
+            <div class="match">IM vs BSS</div>
+            <div class="match">TTM vs Acron</div>
+          </div>
+          <div class="round">
+            <h3>Round 2</h3>
+            <div class="match">TLA vs SAM</div>
+            <div class="match">TFA vs CLMTY</div>
+            <div class="match">IM vs Acron</div>
+          </div>
+          <div class="round">
+            <h3>Semi-Final</h3>
+            <div class="match">not yet known</div>
+          </div>
+          <div class="round">
+            <h3>Final</h3>
+            <div class="match">not yet known</div>
+          </div>
+        </div>
+          
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Big Skill Gorilla League</p>
+  </footer>
+  <script>
+    fetch("nav.html")
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("nav-placeholder").innerHTML = data;
+      });
+  </script>
+  
+</body>
+</html>
