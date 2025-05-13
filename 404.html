@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BSGL – Big Skill Gorilla League</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>error 404 :(</h1>
+    <p> there's a secret here :)</p>
+    <div id="nav-placeholder"></div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h2>you have found error 404</h2>
+      <p>sad</p>
+      <p>can you find the secret?</p>
+      <a style="color: #0e0e0e;" href="game/index.html">click here</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Big Skill Gorilla League</p>
+  </footer>
+  <script>
+    fetch("nav.html")
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("nav-placeholder").innerHTML = data;
+      });
+  </script>
+</body>
+</html>
