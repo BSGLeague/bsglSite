@@ -14,34 +14,37 @@
 
   <main>
     <section class="intro">
-      <h2>join our leauge</h2>
+      <h2>join us as a moderator</h2>
       <p>Complete the form and we'll contact you!</p>
     </section>
     <section class="form">
       <form
   action="https://api.web3forms.com/submit"
   method="POST"
-> <input type="hidden" name="redirect" value="https://bigskillgl.online/forms/thank-you">
-  <input type="hidden" name="subject" value="Clan apllication">
+>
   <input type="hidden" name="access_key" value="bb4de418-6696-4de6-bda2-03e47f5c7a71">
+  <input type="hidden" name="subject" value="Moderator apllication">
+  <input type="hidden" name="redirect" value="https://bigskillgl.online/forms/thank-you">
   <label>
     Your email:
     <input type="email" name="email">
   </label>
   <label>
-    Your clan's name
-    <textarea name="clan name"></textarea>
+    Your name:
+    <textarea name="name"></textarea>
   </label>
   <label>
-    Your clan's tag
-    <textarea name="clan tag"></textarea>
+    Your discord:
+    <textarea name="discord"></textarea>
   </label>
-  
   <label>
-    Your clan's discord
-    <textarea name="clan discord"></textarea>
+    Did you ever moderate a server before:
+    <input type="checkbox" name="knowledge?">
   </label>
-  
+  <label>
+    why do you want to become a moderator:
+    <textarea name="explanation"></textarea>
+  </label>
   <!-- your other form fields go here -->
   <button type="submit">Send</button>
   </form>
