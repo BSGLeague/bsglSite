@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BSGL – Big Skill Gorilla League</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header>
+    <h1>Applications</h1>
+    <p></p>
+    <div id="nav-placeholder"></div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h2>join us as a moderator</h2>
+      <p>Complete the forms and we'll contact you!</p>
+    </section>
+    <section class="form">
+      <form
+  action="https://formspree.io/f/mrbqglvy"
+  method="POST"
+>
+  <label>
+    Your email:
+    <input type="email" name="email">
+  </label>
+  <label>
+    Your clan's name
+    <textarea name="clan name"></textarea>
+  </label>
+  <label>
+    Your clan's tag
+    <textarea name="clan tag"></textarea>
+  </label>
+  
+  <label>
+    Your clan's discord
+    <textarea name="clan discord"></textarea>
+  </label>
+  
+  <!-- your other form fields go here -->
+  <button type="submit">Send</button>
+  </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Big Skill Gorilla League</p>
+  </footer>
+  <script>
+    fetch("../nav.html")
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("nav-placeholder").innerHTML = data;
+      });
+  </script>
+</body>
+</html>
