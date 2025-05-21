@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Neighbor-Chain Cipher</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      color: #333;
+    }
+    label, textarea, input, button {
+      display: block;
+      margin: 0.5rem 0;
+    }
+    textarea, input {
+      width: 100%;
+      padding: 0.5rem;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+    .output {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Neighbor-Chain Cipher</h1>
+
+<label for="plaintext">Plaintext:</label>
+<textarea id="plaintext" rows="2">test</textarea>
+
+<label for="key">Key (comma-separated numbers):</label>
+<input id="key" value="5,5,1,5">
+
+<button onclick="encodeText()">Encode</button>
+<button onclick="decodeText()">Decode</button>
+
+<div class="output" id="encoded"></div>
+<div class="output" id="decoded"></div>
+
+<script>
+function charToNum(c) {
+  return c.toLowerCase().charCodeAt(0) - 'a'.charCodeAt(0);
+}
+
+function numToChar(n) {
+  return String.fromCharCode((n % 26) + 'a'.charCodeAt(0));
+}
+
+function modInverse(a, m = 26) {
+  a = a % m;
+  for (let x = 1; x < m; x++) {
+    if ((a * x) % m === 1) {
+      return x;
+    }
+  }
+  return null;
+}
+
+function encode(plaintext, key) {
+  let keyLen = key.length;
+  let ciphertextNums = [];
+  let firstNum = charToNum(plaintext[0]);
+  let encFirst = (firstNum + key[0]) % 26;
+  ciphertextNums.push(encFirst);
+
+  for (let i = 1; i < plaintext.length; i++) {
+    let currNum = charToNum(plaintext[i]);
+    let prevNum = charToNum(plaintext[i - 1]);
+    let diff = (currNum - prevNum + 26) % 26;
+    let keyElement = key[i % keyLen];
+    let encVal = (diff * keyElement) % 26;
+    ciphertextNums.push(encVal);
+  }
+
+  return ciphertextNums.map(numToChar).join('');
+}
+
+function decode(ciphertext, key) {
+  let keyLen = key.length;
+  let plaintextNums = [];
+
+  let firstEnc = charToNum(ciphertext[0]);
+  let firstPlain = (firstEnc - key[0] + 26) % 26;
+  plaintextNums.push(firstPlain);
+
+  for (let i = 1; i < ciphertext.length; i++) {
+    let encVal = charToNum(ciphertext[i]);
+    let keyElement = key[i % keyLen];
+    let inv = modInverse(keyElement);
+    if (inv === null) {
+      return `Error: No modular inverse for key element ${keyElement}`;
+    }
+    let diff = (encVal * inv) % 26;
+    let currPlain = (plaintextNums[i - 1] + diff) % 26;
+    plaintextNums.push(currPlain);
+  }
+
+  return plaintextNums.map(numToChar).join('');
+}
+
+function parseKey(input) {
+  return input.split(',').map(x => parseInt(x.trim()));
+}
+
+function encodeText() {
+  const plaintext = document.getElementById("plaintext").value;
+  const key = parseKey(document.getElementById("key").value);
+  const result = encode(plaintext, key);
+  document.getElementById("encoded").textContent = "Encoded: " + result;
+}
+
+function decodeText() {
+  const ciphertext = document.getElementById("plaintext").value;
+  const key = parseKey(document.getElementById("key").value);
+  const result = decode(ciphertext, key);
+  document.getElementById("decoded").textContent = "Decoded: " + result;
+}
+</script>
+
+</body>
+</html>
