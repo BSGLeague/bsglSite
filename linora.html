@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Linora Cipher Documentation</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f7fa;
+      color: #222;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 0.2em;
+      color: #1e2a38;
+    }
+
+    .tagline {
+      font-style: italic;
+      color: #555;
+      margin-bottom: 2rem;
+    }
+
+    h2 {
+      color: #1e2a38;
+      margin-top: 2rem;
+    }
+
+    ol {
+      margin-left: 1.5rem;
+    }
+
+    ul {
+      margin-left: 1rem;
+    }
+
+    code {
+      background: #e8e8e8;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    footer {
+      margin-top: 3rem;
+      border-top: 1px solid #ccc;
+      padding-top: 1rem;
+      font-size: 0.9em;
+      color: #444;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Linora Cipher</h1>
+    <p class="tagline">A modular difference-chain cipher by <strong>modify</strong></p>
+
+    <section>
+      <h2>Overview</h2>
+      <p>
+        The Linora Cipher is a symmetric encryption algorithm created by <strong>modify</strong> in 2025.
+        It transforms characters using modular arithmetic and chained differences, making each output character
+        reliant on both the input and the previous result.
+      </p>
+    </section>
+
+    <section>
+      <h2>Algorithm Description</h2>
+      <ol>
+        <li>Convert all characters to numbers: <code>a = 0, b = 1, ..., z = 25</code>.</li>
+        <li>First character:
+          <ul>
+            <li>Add the first key element to it (modulo 26).</li>
+          </ul>
+        </li>
+        <li>Each subsequent character:
+          <ul>
+            <li>Compute the difference from the previous character (mod 26).</li>
+            <li>Multiply the result by the corresponding key element (cycled).</li>
+            <li>Take the result modulo 26.</li>
+          </ul>
+        </li>
+        <li>To decode:
+          <ul>
+            <li>Subtract the first key element from the first character (mod 26).</li>
+            <li>For the rest, multiply by the modular inverse of each key element and reverse the chaining.</li>
+          </ul>
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Authorship & License</h2>
+      <p>
+        Cipher algorithm and implementation by <strong>modify</strong>.<br/>
+        Copyright © 2025. All rights reserved.<br/>
+        You may use or adapt this cipher with proper attribution to <strong>modify</strong>.
+      </p>
+    </section>
+
+    <footer>
+      <p>Proof of original authorship. Generated on: <span id="date"></span></p>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("date").textContent = new Date().toLocaleDateString();
+  </script>
+</body>
+</html>
