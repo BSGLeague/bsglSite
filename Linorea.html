@@ -38,7 +38,7 @@
 <textarea id="plaintext" rows="2">test</textarea>
 
 <label for="key">Key (comma-separated numbers):</label>
-<input id="key" value="5,5,1,5">
+<input id="key" value="3,5,1,5">
 
 <button onclick="encodeText()">Encode</button>
 <button onclick="decodeText()">Decode</button>
@@ -51,64 +51,105 @@ function charToNum(c) {
   return c.toLowerCase().charCodeAt(0) - 'a'.charCodeAt(0);
 }
 
-function numToChar(n) {
-  return String.fromCharCode((n % 26) + 'a'.charCodeAt(0));
+function numToChar(n, isUpper) {
+  const base = isUpper ? 'A'.charCodeAt(0) : 'a'.charCodeAt(0);
+  return String.fromCharCode((n % 26) + base);
 }
 
 function modInverse(a, m = 26) {
   a = a % m;
   for (let x = 1; x < m; x++) {
-    if ((a * x) % m === 1) {
-      return x;
-    }
+    if ((a * x) % m === 1) return x;
   }
   return null;
 }
 
+function extractLetters(text) {
+  let letters = [];
+  let nonLetters = [];
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (/[a-zA-Z]/.test(ch)) {
+      letters.push({ char: ch, upper: ch === ch.toUpperCase() });
+    } else {
+      nonLetters.push({ index: i, char: ch });
+    }
+  }
+  return { letters, nonLetters };
+}
+
+function reinsertNonLetters(transformedLetters, nonLetters) {
+  let result = [];
+  let letterIndex = 0;
+  for (let i = 0; i < transformedLetters.length + nonLetters.length; i++) {
+    const nonLetter = nonLetters.find(n => n.index === i);
+    if (nonLetter) {
+      result.push(nonLetter.char);
+    } else {
+      result.push(transformedLetters[letterIndex]);
+      letterIndex++;
+    }
+  }
+  return result.join('');
+}
+
 function encode(plaintext, key) {
+  const { letters, nonLetters } = extractLetters(plaintext);
+  if (letters.length === 0) return plaintext;
+
   let keyLen = key.length;
   let ciphertextNums = [];
-  let firstNum = charToNum(plaintext[0]);
-  let encFirst = (firstNum + key[0]) % 26;
+
+  const firstNum = charToNum(letters[0].char);
+  const encFirst = (firstNum + key[0]) % 26;
   ciphertextNums.push(encFirst);
 
-  for (let i = 1; i < plaintext.length; i++) {
-    let currNum = charToNum(plaintext[i]);
-    let prevNum = charToNum(plaintext[i - 1]);
-    let diff = (currNum - prevNum + 26) % 26;
-    let keyElement = key[i % keyLen];
-    let encVal = (diff * keyElement) % 26;
+  for (let i = 1; i < letters.length; i++) {
+    const currNum = charToNum(letters[i].char);
+    const prevNum = charToNum(letters[i - 1].char);
+    const diff = (currNum - prevNum + 26) % 26;
+    const keyElement = key[i % keyLen];
+    const encVal = (diff * keyElement) % 26;
     ciphertextNums.push(encVal);
   }
 
-  return ciphertextNums.map(numToChar).join('');
+  const transformed = ciphertextNums.map((num, i) =>
+    numToChar(num, letters[i].upper)
+  );
+
+  return reinsertNonLetters(transformed, nonLetters);
 }
 
 function decode(ciphertext, key) {
+  const { letters, nonLetters } = extractLetters(ciphertext);
+  if (letters.length === 0) return ciphertext;
+
   let keyLen = key.length;
   let plaintextNums = [];
 
-  let firstEnc = charToNum(ciphertext[0]);
-  let firstPlain = (firstEnc - key[0] + 26) % 26;
+  const firstEnc = charToNum(letters[0].char);
+  const firstPlain = (firstEnc - key[0] + 26) % 26;
   plaintextNums.push(firstPlain);
 
-  for (let i = 1; i < ciphertext.length; i++) {
-    let encVal = charToNum(ciphertext[i]);
-    let keyElement = key[i % keyLen];
-    let inv = modInverse(keyElement);
-    if (inv === null) {
-      return `Error: No modular inverse for key element ${keyElement}`;
-    }
-    let diff = (encVal * inv) % 26;
-    let currPlain = (plaintextNums[i - 1] + diff) % 26;
+  for (let i = 1; i < letters.length; i++) {
+    const encVal = charToNum(letters[i].char);
+    const keyElement = key[i % keyLen];
+    const inv = modInverse(keyElement);
+    if (inv === null) return `Error: No modular inverse for key element ${keyElement}`;
+    const diff = (encVal * inv) % 26;
+    const currPlain = (plaintextNums[i - 1] + diff) % 26;
     plaintextNums.push(currPlain);
   }
 
-  return plaintextNums.map(numToChar).join('');
+  const transformed = plaintextNums.map((num, i) =>
+    numToChar(num, letters[i].upper)
+  );
+
+  return reinsertNonLetters(transformed, nonLetters);
 }
 
 function parseKey(input) {
-  return input.split(',').map(x => parseInt(x.trim()));
+  return input.split(',').map(x => parseInt(x.trim())).filter(n => !isNaN(n));
 }
 
 function encodeText() {
@@ -125,6 +166,5 @@ function decodeText() {
   document.getElementById("decoded").textContent = "Decoded: " + result;
 }
 </script>
-
 </body>
 </html>
